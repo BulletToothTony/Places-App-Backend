@@ -1,4 +1,4 @@
-const uuid = require('uuid').v4
+const uuid = require("uuid").v4;
 
 const HttpError = require("../models/http-error");
 
@@ -35,7 +35,6 @@ const getPlaceByUserId = (req, res, next) => {
     return p.creator === userId;
   });
 
-
   // below line 40 doesn't match code from guide, instead they use if (!place) {} may need to change back in future
   if (place.length === 0) {
     return next(
@@ -47,20 +46,38 @@ const getPlaceByUserId = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
-    const {title, description, coordinates, address, creator} = req.body
-    const createdPlace = {
-        id: uuid(),
-        title,
-        description,
-        location: coordinates,
-        address,
-        creator
-    }
-    DUMMY_PLACES.push(createdPlace)
+  const { title, description, coordinates, address, creator } = req.body;
+  const createdPlace = {
+    id: uuid(),
+    title,
+    description,
+    location: coordinates,
+    address,
+    creator,
+  };
+  DUMMY_PLACES.push(createdPlace);
 
-    res.status(201).json({place: createdPlace})
-}
+  res.status(201).json({ place: createdPlace });
+};
+
+const updatePlaceById = (req, res, next) => {
+  const { title, description } = req.body;
+  const placeId = req.params.pid;
+
+  const updatedPlace = { ...DUMMY_PLACES.find((p) => p.id === placeId) };
+  const placeIndex = DUMMY_PLACES.findIndex((p) => p.id === placeId);
+  updatedPlace.title = title;
+  updatedPlace.description = description;
+
+  DUMMY_PLACES[placeIndex] = updatedPlace;
+
+  res.status(200).json({ place: updatedPlace });
+};
+
+const deletePlace = (req, res, next) => {};
 
 exports.getPlaceById = getPlaceById;
 exports.getPlaceByUserId = getPlaceByUserId;
 exports.createPlace = createPlace;
+exports.updatePlaceById = updatePlaceById;
+exports.deletePlace = deletePlace;
