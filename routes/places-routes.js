@@ -25,7 +25,7 @@ router.patch(
     check("title").not().isEmpty(),
     check("description").isLength({ min: 5 })
     ],
-  placesControllers.updatePlaceById
+  placesControllers.updatePlace
 );
 
 router.delete("/:pid", placesControllers.deletePlace);
