@@ -13,8 +13,16 @@ const DUMMY_USERS = [
   },
 ];
 
-const getUsers = (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find()
+  } catch (err) {
+    const error = new HttpError('Error finding users', 401)
+    return next(error)
+  }
+
+  res.json({ users: users.map((user) => user.toObject({getters: true})) });
 };
 
 const signup = async (req, res, next) => {
@@ -84,19 +92,12 @@ const login = async (req, res, next) => {
   }
 
   if (!existingUser || existingUser.password !== password) {
-    const error = new HttpError('Invalid credentials, could not log you in.', 401)
-    return next(error)
+    const error = new HttpError(
+      "Invalid credentials, could not log you in.",
+      401
+    );
+    return next(error);
   }
-
-
-  // const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
-  // if (!identifiedUser || identifiedUser.password !== password) {
-  //   throw new HttpError(
-  //     "Could not identify user, credentials seem to be wrong.",
-  //     401
-  //   );
-  // }
-
   res.json({ message: "Logged in!" });
 };
 
