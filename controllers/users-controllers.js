@@ -16,9 +16,9 @@ const DUMMY_USERS = [
 const getUsers = async (req, res, next) => {
   let users;
   try {
-    users = await User.find()
+    users = await User.find({}, '-password')
   } catch (err) {
-    const error = new HttpError('Error finding users', 401)
+    const error = new HttpError('Fetching users failed, please try again later.', 500)
     return next(error)
   }
 
@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -63,7 +63,7 @@ const signup = async (req, res, next) => {
     image:
       "https://www.shutterstock.com/image-vector/user-icon-trendy-flat-style-260nw-418179865.jpg",
     password,
-    places,
+    places: []
   });
 
   try {
