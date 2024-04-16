@@ -49,9 +49,14 @@ const getPlaceById = async (req, res, next) => {
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
+  // getting places by userId can be done either way with places = and using creator: userId or userwithPlaces = and using populate method
+  // if using userWithPlaces, need to change places.length === 0 error check to userWithPlaces.places
+  // also would need to change map to userWithPlaces.places.map....
   let places;
+  // let userWithPlaces
   try {
     places = await Place.find({ creator: userId });
+    // userWithPlaces = await User.findById(userId).populate('places')
   } catch (err) {
     const error = new HttpError(
       "Fetching places failed, please try again later",
