@@ -15,7 +15,9 @@ router.get("/user/:uid", placesControllers.getPlacesByUserId);
 
 // router.put("/:pid/comment")
 
-router.put("/comment", placesControllers.postComment)
+router.put("/comment/:pid", placesControllers.postComment)
+
+router.put("/uncomment/:pid", placesControllers.deleteComment)
 
 router.post(
   "/",

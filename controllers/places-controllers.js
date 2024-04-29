@@ -222,6 +222,7 @@ const deletePlace = async (req, res, next) => {
 
 const postComment = async (req, res, next) => {
   console.log('test')
+  const postId = req.params.pid
   // req.userData.userId
 
   // const {comment } = req.body
@@ -236,7 +237,7 @@ const postComment = async (req, res, next) => {
     };
 
     const result = await Place.findByIdAndUpdate(
-      req.body.postId,
+      postId,
       {$push: {comments: comment}},
       {new: true}
     )
@@ -269,9 +270,45 @@ const postComment = async (req, res, next) => {
   
 }
 
+const deleteComment = async (req, res, next) => {
+  console.log('delete comment log')
+
+  const postId = req.params.pid
+  // req.userData.userId
+
+  console.log(postId)
+
+  // const {comment } = req.body
+
+  // can delete using comment id?
+
+  console.log('REQ BODY >', req.body)
+
+  // try {
+  //   // Create a comment object with the text and postedBy properties
+  //   const comment = {
+  //     text: req.body.comment.text,
+  //     postedBy: req.body.comment.postedBy
+  //   };
+
+  //   const result = await Place.findByIdAndUpdate(
+  //     postId,
+  //     {$push: {comments: comment}},
+  //     {new: true}
+  //   )
+ 
+
+  //   res.json(result);
+  // } catch (err) {
+  //   console.error('Error occurred:', err);
+  //   res.status(400).json({ error: err });
+  // }
+}
+
 exports.getPlaceById = getPlaceById;
 exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
 exports.deletePlace = deletePlace;
 exports.postComment = postComment;
+exports.deleteComment = deleteComment;
