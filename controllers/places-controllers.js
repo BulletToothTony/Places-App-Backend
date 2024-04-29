@@ -220,8 +220,58 @@ const deletePlace = async (req, res, next) => {
   res.status(200).json({ message: "Deleted place." });
 };
 
+const postComment = async (req, res, next) => {
+  console.log('test')
+  // req.userData.userId
+
+  // const {comment } = req.body
+
+  console.log('REQ BODY >', req.body)
+
+  try {
+    // Create a comment object with the text and postedBy properties
+    const comment = {
+      text: req.body.comment.text,
+      postedBy: req.body.comment.postedBy
+    };
+
+    const result = await Place.findByIdAndUpdate(
+      req.body.postId,
+      {$push: {comments: comment}},
+      {new: true}
+    )
+ 
+
+    res.json(result);
+  } catch (err) {
+    console.error('Error occurred:', err);
+    res.status(400).json({ error: err });
+  }
+
+  /*
+ try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdPlace.save({ session: sess });
+    user.places.push(createdPlace);
+    await user.save({ session: sess });
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(
+      "Creating place failed, please try again.",
+      500
+    );
+    return next(error);
+  }
+
+  */
+
+  
+}
+
 exports.getPlaceById = getPlaceById;
 exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
 exports.deletePlace = deletePlace;
+exports.postComment = postComment;

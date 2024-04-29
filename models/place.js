@@ -12,6 +12,11 @@ const placeSchema = new Schema({
         lng: {type: Number, required: true}
     },
     creator: {type: mongoose.Types.ObjectId, required: true, ref: 'User'},
+    comments: [{
+        text: String,
+        created: {type: Date, default: Date.now},
+        postedBy: {type: mongoose.Types.ObjectId, ref: 'User'}
+    }]
 })
 
 module.exports = mongoose.model('Place', placeSchema)
