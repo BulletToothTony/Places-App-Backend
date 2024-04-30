@@ -66,7 +66,7 @@ const getPlacesByUserId = async (req, res, next) => {
 const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
 
-  console.log(req.userData)
+  console.log(req.userData);
 
   if (!errors.isEmpty()) {
     console.log(errors);
@@ -90,7 +90,7 @@ const createPlace = async (req, res, next) => {
     address,
     location: coordinates,
     image: req.file.path,
-    creator: req.userData.userId
+    creator: req.userData.userId,
   });
 
   let user;
@@ -223,87 +223,47 @@ const deletePlace = async (req, res, next) => {
 };
 
 const postComment = async (req, res, next) => {
-  console.log('post comment log')
-  console.log(req.userData.email, '< req user email')
-  const postId = req.params.pid
-  // req.userData.userId
-
-  // const {comment } = req.body
-
-  console.log('REQ BODY >', req.body)
+  const postId = req.params.pid;
 
   try {
     // Create a comment object with the text and postedBy properties
     const comment = {
       text: req.body.comment.text,
       postedBy: req.body.comment.postedBy,
-      email: req.userData.email
+      email: req.userData.email,
     };
 
     const result = await Place.findByIdAndUpdate(
       postId,
-      {$push: {comments: comment}},
-      {new: true}
-    )
- 
+      { $push: { comments: comment } },
+      { new: true }
+    );
 
     res.json(result);
   } catch (err) {
-    console.error('Error occurred:', err);
+    console.error("Error occurred:", err);
     res.status(400).json({ error: err });
   }
-
-  /*
- try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdPlace.save({ session: sess });
-    user.places.push(createdPlace);
-    await user.save({ session: sess });
-    await sess.commitTransaction();
-  } catch (err) {
-    const error = new HttpError(
-      "Creating place failed, please try again.",
-      500
-    );
-    return next(error);
-  }
-
-  */
-
-  
-}
+};
 
 const deleteComment = async (req, res, next) => {
-  console.log('delete comment log')
+  const postId = req.params.pid;
 
-  const postId = req.params.pid
-  // req.userData.userId
-  console.log(req.userData, '< userData')
-
-  console.log(postId)
-
-  const {comment } = req.body
-
-  // can delete using comment id?
-
-  console.log('REQ BODY >', req.body)
+  const { comment } = req.body;
 
   try {
     const result = await Place.findByIdAndUpdate(
       postId,
-      // req.body.postId,
-      {$pull: {comments: {_id: comment._id}}},
-      {new: true}
-    )
- 
+      { $pull: { comments: { _id: comment._id } } },
+      { new: true }
+    );
 
     res.json(result);
   } catch (err) {
-    console.error('Error occurred:', err);
+    console.error("Error occurred:", err);
     res.status(400).json({ error: err });
   }
-}
+};
 
 exports.getPlaceById = getPlaceById;
 exports.getPlacesByUserId = getPlacesByUserId;
