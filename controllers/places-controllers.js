@@ -66,6 +66,8 @@ const getPlacesByUserId = async (req, res, next) => {
 const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
 
+  console.log(req.userData)
+
   if (!errors.isEmpty()) {
     console.log(errors);
     return next(
@@ -221,7 +223,8 @@ const deletePlace = async (req, res, next) => {
 };
 
 const postComment = async (req, res, next) => {
-  console.log('test')
+  console.log('post comment log')
+  console.log(req.userData.email, '< req user email')
   const postId = req.params.pid
   // req.userData.userId
 
@@ -233,7 +236,8 @@ const postComment = async (req, res, next) => {
     // Create a comment object with the text and postedBy properties
     const comment = {
       text: req.body.comment.text,
-      postedBy: req.body.comment.postedBy
+      postedBy: req.body.comment.postedBy,
+      email: req.userData.email
     };
 
     const result = await Place.findByIdAndUpdate(
@@ -275,6 +279,7 @@ const deleteComment = async (req, res, next) => {
 
   const postId = req.params.pid
   // req.userData.userId
+  console.log(req.userData, '< userData')
 
   console.log(postId)
 

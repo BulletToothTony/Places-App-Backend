@@ -15,7 +15,8 @@ const placeSchema = new Schema({
     comments: [{
         text: String,
         created: {type: Date, default: Date.now},
-        postedBy: {type: mongoose.Types.ObjectId, ref: 'User'}
+        postedBy: {type: mongoose.Types.ObjectId, ref: 'User'},
+        email: {type: String}
     }]
 })
 
