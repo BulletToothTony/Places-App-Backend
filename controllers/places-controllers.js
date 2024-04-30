@@ -278,31 +278,26 @@ const deleteComment = async (req, res, next) => {
 
   console.log(postId)
 
-  // const {comment } = req.body
+  const {comment } = req.body
 
   // can delete using comment id?
 
   console.log('REQ BODY >', req.body)
 
-  // try {
-  //   // Create a comment object with the text and postedBy properties
-  //   const comment = {
-  //     text: req.body.comment.text,
-  //     postedBy: req.body.comment.postedBy
-  //   };
-
-  //   const result = await Place.findByIdAndUpdate(
-  //     postId,
-  //     {$push: {comments: comment}},
-  //     {new: true}
-  //   )
+  try {
+    const result = await Place.findByIdAndUpdate(
+      postId,
+      // req.body.postId,
+      {$pull: {comments: {_id: comment._id}}},
+      {new: true}
+    )
  
 
-  //   res.json(result);
-  // } catch (err) {
-  //   console.error('Error occurred:', err);
-  //   res.status(400).json({ error: err });
-  // }
+    res.json(result);
+  } catch (err) {
+    console.error('Error occurred:', err);
+    res.status(400).json({ error: err });
+  }
 }
 
 exports.getPlaceById = getPlaceById;
