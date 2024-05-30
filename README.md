@@ -14,8 +14,6 @@ Developed by **Henry Westhoff-Lewis**
 
 ## About The Project
 
-This is a messaging application which allows users to send messages to one another either in group chats or privately.
-
 This is a full stack MERN app allowing users to submit places they've visited allowing users to comment on these. The application allows users to CREATE, READ, UPDATE and DELETE with various features such as authentication and viewing the location on a live map. 
 
 ### Key Features
